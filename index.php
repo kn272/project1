@@ -79,7 +79,7 @@ class homepage extends page {
     $tmpFileName = $_FILES["selectFile"]["tmp_name"];
 
     $fileName =  upload::uploadCsv($fileName,$tmpFileName);
-    
+    //$fileName =  upload::uploadCsv($_FILES);
     header('Location:?page=table&fileName='. $fileName);
     //header('Location:?page=uploadfile&fileName='. $_FILES["selectFile"]["name"] .'&tmpFileName='. $_FILES["selectFile"]["tmp_name"] );
     
@@ -133,10 +133,11 @@ class stringFunctions {
 class upload {
   public static function uploadCsv($fileName,$tmpFileName) {
      $targetDir = "uploads/";
-     print_r($_FILES);
-     $targetFile = $targetDir . $_FILES["selectFile"]["name"];
+     //print_r($_FILES);
+     //$targetFile = $targetDir . $_FILES["selectFile"]["name"];
      $targetFile = $targetDir . $fileName;
      $fileType = pathinfo($targetFile,PATHINFO_EXTENSION);
+     //$fileName = $_FILES["SelectFile"]["tmp_name"];
      $fileName=$tmpFileName;
      // move_uploaded_file($_FILES["selectFile"]["tmp_name"], "uploads/" . $_FILES["selectFile"]["name"]);
      move_uploaded_file($fileName,$targetFile);
