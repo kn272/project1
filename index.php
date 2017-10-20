@@ -63,17 +63,38 @@ class homepage extends page {
   }
   
   public function post() {
-     $targetDir = "uploads/";
+     /*$targetDir = "uploads/";
      print_r($_FILES);
      $targetFile = $targetDir . $_FILES["selectFile"]["name"];
      $fileType = pathinfo($targetFile,PATHINFO_EXTENSION);
      if(isset($_POST["submit"])) {
-       $fileName=$_FILES["selectFile"]["tmp_name"];
-       // move_uploaded_file($_FILES["selectFile"]["tmp_name"], "uploads/" . $_FILES["selectFile"]["name"]);
-       move_uploaded_file($fileName,$targetFile);
+        $fileName=$_FILES["selectFile"]["tmp_name"];
+        // move_uploaded_file($_FILES["selectFile"]["tmp_name"], "uploads/" . $_FILES["selectFile"]["name"]);
+        move_uploaded_file($fileName,$targetFile);
 	echo 'File uploaded successfully.';
 	header('Location:?page=table&fileName='. $targetFile);
-     }
+     }*/
+    if(isset($_POST["submit"])) {
+    $fileName = $_FILES["selectFile"]["tmp_name"];
+    header('Location:?page=table&fileName='. $fileName);
+    }
+  }
+}
+
+class uploadfile extends page {
+  public function get() {
+      $targetDir = "uploads/";
+      $fileName = $_GET['fileName'];
+      //print_r($_FILES);
+      $targetFile = $targetDir . $_FILES["selectFile"]["name"];
+      $fileType = pathinfo($targetFile,PATHINFO_EXTENSION);
+      //if(isset($_POST["submit"])) {
+        // $fileName=$_FILES["selectFile"]["tmp_name"];
+         // move_uploaded_file($_FILES["selectFile"]["tmp_name"], "uploads/" . $_FILES["selectFile"]["name"]);
+	 move_uploaded_file($fileName,$targetFile);
+         //echo 'File uploaded successfully.';
+         header('Location:?page=table&fileName='. $targetFile);
+      //}								    
   }
 }
 
