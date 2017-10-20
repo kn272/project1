@@ -75,26 +75,15 @@ class homepage extends page {
 	header('Location:?page=table&fileName='. $targetFile);
      }*/
     if(isset($_POST["submit"])) {
-    $fileName = $_FILES["selectFile"]["tmp_name"];
-    header('Location:?page=table&fileName='. $fileName);
-    }
-  }
-}
+    $fileName = $_FILES["selectFile"]["name"];
+    $tmpFileName = $_FILES["selectFile"]["tmp_name"];
 
-class uploadfile extends page {
-  public function get() {
-      $targetDir = "uploads/";
-      $fileName = $_GET['fileName'];
-      //print_r($_FILES);
-      $targetFile = $targetDir . $_FILES["selectFile"]["name"];
-      $fileType = pathinfo($targetFile,PATHINFO_EXTENSION);
-      //if(isset($_POST["submit"])) {
-        // $fileName=$_FILES["selectFile"]["tmp_name"];
-         // move_uploaded_file($_FILES["selectFile"]["tmp_name"], "uploads/" . $_FILES["selectFile"]["name"]);
-	 move_uploaded_file($fileName,$targetFile);
-         //echo 'File uploaded successfully.';
-         header('Location:?page=table&fileName='. $targetFile);
-      //}								    
+    $fileName =  upload::uploadCsv($fileName,$tmpFileName);
+    
+    header('Location:?page=table&fileName='. $fileName);
+    //header('Location:?page=uploadfile&fileName='. $_FILES["selectFile"]["name"] .'&tmpFileName='. $_FILES["selectFile"]["tmp_name"] );
+    
+    }
   }
 }
 
@@ -140,6 +129,21 @@ class stringFunctions {
      print($text);
   }
 }
+
+class upload {
+  public static function uploadCsv($fileName,$tmpFileName) {
+     $targetDir = "uploads/";
+     print_r($_FILES);
+     $targetFile = $targetDir . $_FILES["selectFile"]["name"];
+     $targetFile = $targetDir . $fileName;
+     $fileType = pathinfo($targetFile,PATHINFO_EXTENSION);
+     $fileName=$tmpFileName;
+     // move_uploaded_file($_FILES["selectFile"]["tmp_name"], "uploads/" . $_FILES["selectFile"]["name"]);
+     move_uploaded_file($fileName,$targetFile);
+     return $targetFile;
+  }
+}
+
 
 
 ?>     
