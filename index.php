@@ -70,7 +70,6 @@
            }
            else {
               echo "<script type='text/javascript'>alert('Please select a csv file')</script>";
-	      //header('Location:index.php');
            }
         }
      }
@@ -143,6 +142,49 @@
   class stringFunctions {
      public static function printThis($text) {
         print($text);
+     }
+  }
+
+  class htmlTags {
+     
+     public static function startTag($text) {
+        $tag = '<'. $text .'>';
+	return $tag;
+     }
+
+     public static function endTag($text) {
+        $tag = '</'. $text .'>';
+	return $tag;
+     }
+
+     public static function titleTag($text) {
+        $tag = '<title>'. $text .'</title>';
+	return $tag;
+     }
+
+     public static function inputTag($text) {
+        $tag = '<input '. $text .'>';
+	return $tag;
+     }
+
+     public static function brTag($text) {
+        $tag = '<br>';
+	return $tag;
+     }
+
+     public static function h1Tag($text) {
+        $tag = '<h1>'. $text .'</h1>';
+	return $tag;
+     }
+
+     public static function thTag($text) {
+        $tag = '<th>'. $text .'</th>';
+	return $tag;
+     }
+
+     public static function tdTag($text) {
+        $tag = '<td>'. $text .'</td>';
+	return $tag;
      }
   }
 
