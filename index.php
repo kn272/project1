@@ -27,13 +27,14 @@
      protected $html;
 
      public function __construct() {
-        $this->html .= '<html>';
-        $this->html .= '<title>project1</title>';
-        $this->html .= '<body>';
+        $this->html .= htmlTags::startTag('html');
+        $this->html .= htmlTags::titleTag('project1');
+        $this->html .= htmlTags::startTag('body');
      }
 
      public function __destruct() {
-        $this->html .= '</body></html>';
+        $this->html .= htmlTags::endTag('html');
+	$this->html .= htmlTags::endTag('body');
         stringFunctions::printThis($this->html);
      }
 
@@ -49,12 +50,12 @@
   class homepage extends page {
 
      public function get() {
-        $form = '<form action="index.php" method="post" enctype="multipart/form-data">';
-        $form .= 'Upload .CSV file:<br>';
-        $form .= '<input type="file" name="selectFile" id="selectFile">';
-        $form .= '<input type="submit" value="submit" name="submit">';
-        $form .= '</form>';
-        $this->html .= '<h1>.CSV file upload</h1>';
+        $form = htmlTags::startTag('form action="index.php" method="post" enctype="multipart/form-data"');
+        $form .= 'Upload .CSV file:'. htmlTags::brTag();
+        $form .= htmlTags::inputTag('type="file" name="selectFile" id="selectFile"');
+        $form .= htmlTags::inputTag('type="submit" value="submit" name="submit"');
+        $form .= htmlTags::endTag('form');
+        $this->html .= htmlTags::h1Tag('.CSV file upload');
         $this->html .= $form;
      }
   
@@ -82,35 +83,39 @@
         echo trim($fileName, "uploads/"). " was uploaded successfully and table is as follows:<br><br>";
         $heading = 1;
         $handle = fopen($fileName,"r");
-        $table = '<table border="1">';
+        $table = htmlTags::startTag('table border="1"');
         while (($data = fgetcsv($handle))!=FALSE) {
            if ($heading == 1) {
-              $table .= '<thead><tr>';
+              $table .= htmlTags::startTag('thead');
+	      $table .= htmlTags::startTag('tr');
 	      foreach ($data as $value) {
                  if(!isset($value)) {
 	            $value = "&nbsp";
 		 }
                  else {
-	            $table .= "<th>". $value ."</th>";
+	            $table .= htmlTags::thTag($value);
 		 }
 	      }
-	      $table .=  '</tr></thead><tbody>';
+	      $table .= htmlTags::endTag('tr');
+	      $table .= htmlTags::endTag('thead');
+	      $table .= htmlTags::startTag('tbody');
 	   }
 	   else {
-              $table .= '<tr>';
+              $table .= htmlTags::startTag('tr');
 	      foreach ($data as $value) {
                  if(!isset($value)) {
                     $value = "&nbsp";
 		 }
                  else {
-	            $table .=  "<td>". $value . "</td>";
+	            $table .= htmlTags::tdTag($value);
 	       	 }   
 	      }
-	      $table .= '</tr>';
+	      $table .= htmlTags::endTag('tr');
 	   }
 	   $heading++;
         }
-        $table .= '</tbody></table>';
+	$table .= htmlTags::endTag('tbody');
+	$table .= htmlTags::endTag('table');
         $this->html .= $table;
         fclose($handle);
      }
@@ -167,7 +172,7 @@
 	return $tag;
      }
 
-     public static function brTag($text) {
+     public static function brTag() {
         $tag = '<br>';
 	return $tag;
      }
