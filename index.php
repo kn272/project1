@@ -16,18 +16,16 @@ $obj = new main();
 class main {
 
   public function __construct() {
-     $pageRequest = 'homepage';
-     if(isset($_REQUEST['page'])) {
-        $pageRequest = $_REQUEST['page'];
-     }
-     $page = new $pageRequest;
+     $pageToLoad = frontController::pageLoader();
+     $page = new $pageToLoad;
 
-     if($_SERVER['REQUEST_METHOD'] == 'GET') {
+    /* if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $page->get();
      }
      else {
         $page->post();
-     }
+     }*/
+     frontController::methodLoader($page);
   }
 }
 
@@ -63,17 +61,6 @@ class homepage extends page {
   }
   
   public function post() {
-     /*$targetDir = "uploads/";
-     print_r($_FILES);
-     $targetFile = $targetDir . $_FILES["selectFile"]["name"];
-     $fileType = pathinfo($targetFile,PATHINFO_EXTENSION);
-     if(isset($_POST["submit"])) {
-        $fileName=$_FILES["selectFile"]["tmp_name"];
-        // move_uploaded_file($_FILES["selectFile"]["tmp_name"], "uploads/" . $_FILES["selectFile"]["name"]);
-        move_uploaded_file($fileName,$targetFile);
-	echo 'File uploaded successfully.';
-	header('Location:?page=table&fileName='. $targetFile);
-     }*/
     if(isset($_POST["submit"])) {
     $fileName = $_FILES["selectFile"]["name"];
     $tmpFileName = $_FILES["selectFile"]["tmp_name"];
@@ -112,16 +99,39 @@ class table extends page {
                  $value = "&nbsp";
               else
 	         $table .=  "<td>". $value . "</td>";
-	   $table .= '</tr>';
 	   }
+	   $table .= '</tr>';
 	}
+	$heading++;
     }
-    $heading++;
     $table .= '</tbody></table>';
     $this->html .= $table;
     fclose($handle);
-    stringFunctions::printThis($this->html);
+    //stringFunctions::printThis($this->html);
   }
+}
+
+class frontController {
+
+  public static function pageLoader() {     
+     if(isset($_REQUEST['page'])) {
+        return $_REQUEST['page'];
+     }
+     else {
+        $pageToLoad = 'homepage';
+	return $pageToLoad;
+     }
+  }
+
+  public static function methodLoader($page) {
+     if($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $page->get();
+     }
+     else {
+        $page->post();
+     }
+  }
+
 }
 
 class stringFunctions {
