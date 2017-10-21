@@ -18,13 +18,6 @@ class main {
   public function __construct() {
      $pageToLoad = frontController::pageLoader();
      $page = new $pageToLoad;
-
-    /* if($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $page->get();
-     }
-     else {
-        $page->post();
-     }*/
      frontController::methodLoader($page);
   }
 }
